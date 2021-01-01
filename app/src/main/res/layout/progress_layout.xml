@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#CCFFFFFF"
+    >
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressBackgroundTint="@color/purple_200"
+        android:progressDrawable="@color/purple_200"
+        android:visibility="visible"
+        android:id="@+id/progress_bar"
+        tools:ignore="UnusedAttribute">
+
+    </ProgressBar>
+    <TextView
+        android:id="@+id/pbText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/purple_200"
+        android:layout_marginTop="8dp"
+        android:text="Please wait ..."/>
+</LinearLayout>
