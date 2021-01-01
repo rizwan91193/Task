@@ -9,12 +9,9 @@ import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.justclean.mytask.R
 import com.justclean.mytask.databinding.ActivityMainBinding
 import com.justclean.mytask.ui.main.SectionsPagerAdapter
-import com.justclean.mytask.util.NetworkConnection
-import com.justclean.mytask.util.snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,5 +54,29 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+//            val fragment = this.supportFragmentManager.primaryNavigationFragment
+           /* val fragment = supportFragmentManager.fragments.get(0).childFragmentManager.fragments.get(0)
+            if(fragment is DetailFragment){
+                val transaction = this.supportFragmentManager.beginTransaction()
+                val fragment1 = PostFragment()
+                transaction.replace(R.id.constraintLayout,fragment1)
+                transaction.commit()
+            }*/
+            /*if(supportFragmentManager.backStackEntryCount>1){
+                val fragment = PlaceholderFragment.newInstance(0)
+            }else{
+                super.onBackPressed()
+            }*/
+
+
+
+           /* val transaction = supportFragmentManager.beginTransaction()
+            val fragment1 = PostFragment()
+            transaction.replace(R.id.constraintLayout,fragment1)
+            transaction.commit()*/
     }
 }

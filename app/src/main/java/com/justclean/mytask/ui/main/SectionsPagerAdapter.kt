@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.justclean.mytask.R
+import com.justclean.mytask.ui.main.favorites.FavoritesFragment
 import com.justclean.mytask.ui.main.post.PostFragment
 
 private val TAB_TITLES = arrayOf(
@@ -25,16 +26,17 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
         var fragment:Fragment = Fragment()
         when(position){
             0->{
-                fragment = PostFragment.newInstance()
+                fragment = PlaceholderFragment.newInstance(0)
             }
             1->{
-                fragment= PlaceholderFragment.newInstance(position + 1)
+                fragment= PlaceholderFragment.newInstance(1)
             }
 
         }
         return fragment
 
     }
+
 
     override fun getPageTitle(position: Int): CharSequence? {
         return context.resources.getString(TAB_TITLES[position])

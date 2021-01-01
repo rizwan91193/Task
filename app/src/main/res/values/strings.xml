@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">MyTask</string>
     <string name="tab_text_1">Posts</string>
-    <string name="tab_text_2">Detail</string>
+    <string name="tab_text_2">Favourites</string>
     <string name="title">Title</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="no_data_found">No data found</string>
+    <string name="comment_list">Comment List</string>
 </resources>

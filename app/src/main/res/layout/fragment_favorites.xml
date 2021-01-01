@@ -4,16 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
     <androidx.constraintlayout.widget.ConstraintLayout
 
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/content_layout"
         >
         <androidx.recyclerview.widget.RecyclerView
@@ -30,20 +25,21 @@
             >
 
         </androidx.recyclerview.widget.RecyclerView>
+
         <TextView
+            android:id="@+id/no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/no_data"
             android:text="@string/no_data_found"
+            android:visibility="gone"
             android:textSize="@dimen/medium_text_size"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/purple_700"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
 
+            app:layout_constraintVertical_bias="0.49">
 
         </TextView>
         <include
@@ -60,5 +56,4 @@
 
         </include>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
 </layout>

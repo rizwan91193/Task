@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/root_layout"
+        android:layout_margin="@dimen/less_margin"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardCornerRadius="@dimen/card_elevation"
+        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/image_placeholder"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/avatar"
+            >
+
+        </ImageView>
+        <!--<TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_placeholder"
+            android:text="@string/name"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            app:layout_constraintHorizontal_weight="0.15"
+            android:textColor="@color/black"
+            app:layout_constraintRight_toLeftOf="@+id/title_value"
+            android:layout_marginTop="@dimen/default_margin"
+            android:textSize="@dimen/medium_text_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            >
+
+        </TextView>-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_value"
+            android:text="fhishfishdfuhujfhuhsjduhfujshdjgjksdgjhsdjkghjskdg"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/less_margin"
+            android:layout_marginStart="@dimen/less_margin"
+            app:layout_constraintRight_toLeftOf="@+id/email_value"
+            app:layout_constraintLeft_toRightOf="@+id/image_placeholder"
+            android:textSize="@dimen/medium_text_size"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+        </TextView>
+        <!--<TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/email_placeholder"
+            app:layout_constraintHorizontal_weight="0.15"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/black"
+            app:layout_constraintRight_toLeftOf="@+id/email_value"
+            android:textSize="@dimen/medium_text_size"
+            app:layout_constraintTop_toBottomOf="@+id/title_value"
+            android:text="@string/email"
+            >
+
+        </TextView>-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/email_value"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/less_margin"
+            android:layout_marginStart="@dimen/less_margin"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/title_value"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Lorem Ipsum is simply dummy text of the printing a "
+            >
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/body"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/less_margin"
+            app:layout_constraintLeft_toRightOf="@+id/image_placeholder"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/title_value "
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages."
+            >
+
+        </TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

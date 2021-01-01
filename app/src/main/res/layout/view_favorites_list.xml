@@ -11,19 +11,19 @@
         app:cardElevation="@dimen/card_elevation"
         app:cardCornerRadius="@dimen/card_elevation"
         >
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-        >
-        <!--<TextView
+            >
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/title_placeholder"
                 android:text="@string/title"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-               app:layout_constraintHorizontal_weight="0.1"
+                app:layout_constraintHorizontal_weight="0.1"
                 android:textColor="@color/black"
                 app:layout_constraintRight_toLeftOf="@+id/title_value"
                 android:layout_marginTop="@dimen/default_margin"
@@ -32,42 +32,24 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 >
 
-            </TextView>-->
-        <TextView
+            </TextView>
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/title_value"
-            app:layout_constraintHorizontal_weight="0.9"
+                app:layout_constraintHorizontal_weight="0.9"
                 android:text="fhishfishdfuhujfhuhsjduhfujshdjgjksdgjhsdjkghjskdg"
                 android:textColor="@color/black"
                 android:layout_marginTop="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/less_margin"
+                android:layout_marginStart="@dimen/less_margin"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:textSize="@dimen/medium_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/title_placeholder"
+                android:textSize="@dimen/small_text_size"
                 app:layout_constraintTop_toTopOf="parent"
                 >
 
             </TextView>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:id="@+id/post_image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/splash_grid1"
-            app:layout_constraintTop_toBottomOf="@+id/title_value"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginTop="@dimen/less_margin"
-            >
-
-        </ImageView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,11 +60,11 @@
                 android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:textSize="@dimen/small_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/post_image"
+                app:layout_constraintTop_toBottomOf="@+id/title_value"
                 android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 >
 
             </TextView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

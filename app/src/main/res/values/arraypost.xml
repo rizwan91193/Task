@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="PostImages">
+        <item>@drawable/splash_grid1</item>
+        <item>@drawable/splash_grid2</item>
+        <item>@drawable/splash_grid3</item>
+        <item>@drawable/splash_grid_4</item>
+        <item>@drawable/splash_grid5</item>
+        <item>@drawable/splash_grid6</item>
+        <item>@drawable/splash_grid7</item>
+        <item>@drawable/splash_grid8</item>
+        <item>@drawable/splash_grid9</item>
+        <item>@drawable/splash_grid10</item>
+    </array>
+
+</resources>

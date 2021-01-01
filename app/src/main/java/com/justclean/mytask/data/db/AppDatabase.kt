@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.justclean.mytask.data.db.entity.DetailsData
+import com.justclean.mytask.data.db.entity.FavoritesData
 import com.justclean.mytask.data.db.entity.PostData
 import java.util.concurrent.locks.Lock
 
 
-@Database(entities = [PostData::class],version = 2,exportSchema = false)
+@Database(entities = [PostData::class,DetailsData::class,FavoritesData::class],version = 3,exportSchema = false)
 abstract class AppDatabase:RoomDatabase(){
 
     abstract fun getPostDao():PostDao

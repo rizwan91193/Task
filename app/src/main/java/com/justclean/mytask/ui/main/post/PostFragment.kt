@@ -1,6 +1,7 @@
 package com.justclean.mytask.ui.main.post
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +34,6 @@ class PostFragment :Fragment(),CoroutineScope{
     private lateinit var viewModel: PostViewModel
     private lateinit var postlistAdapter: PostlistAdapter
     private lateinit var networkConnection:NetworkConnection
-//    private val factory: PostViewModelFactory
     private lateinit var job: Job
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,82 +59,86 @@ class PostFragment :Fragment(),CoroutineScope{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupRecyclerView()
+
         networkConnection = NetworkConnection(activity!!)
-        networkConnection.observe(this, Observer { isConnected->
+        networkConnection.observe(activity!!, Observer { isConnected->
             if(!isConnected){
-                binding.contentLayout.snackbar("No Internet Connection")
+                binding.progressBar.visibility = View.VISIBLE
+                binding.contentLayout.snackbar(getString(R.string.no_internet))
+
                 viewModel.getPostDataList().observe(activity!!, Observer {
                 if(!it.isEmpty()){
                     postlistAdapter.differ.submitList(it)
                     binding.progressBar.visibility = View.GONE
                     binding.contentLayout.visibility = View.VISIBLE
+                    binding.noData.visibility =View.GONE
                 }else{
                     binding.progressBar.visibility = View.GONE
                     binding.contentLayout.visibility = View.VISIBLE
+                    binding.noData.visibility =View.VISIBLE
                 }
                 })
-            }else{
-                binding.contentLayout.snackbar("Internet is connected!!")
             }
 
 
 
         })
-        binding.progressBar.visibility = View.VISIBLE
-            val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-            val request = OneTimeWorkRequestBuilder<MyWorkerTask>().setConstraints(constraint).build()
-            WorkManager.getInstance().enqueue(request)
-            WorkManager.getInstance().getWorkInfoByIdLiveData(request.id).observe(activity!!, Observer {
-                workInfo ->  if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
-                launch {
-            withContext(Dispatchers.Main) {
-                try {
-                    val postRepose = viewModel.getPostList()
-                    if (!postRepose.isEmpty()) {
-                        postlistAdapter.differ.submitList(postRepose)
-                        viewModel.insertPostDataList(postRepose)
-                        binding.progressBar.visibility = View.GONE
-                        binding.contentLayout.visibility = View.VISIBLE
-                    } else {
-                        binding.progressBar.visibility = View.GONE
-                        binding.contentLayout.visibility = View.VISIBLE
-                    }
-                } catch (e: APIExceptions) {
-                    binding.progressBar.visibility = View.GONE
-                    binding.contentLayout.visibility = View.VISIBLE
-                    e.printStackTrace()
-                } catch (e: NoInternetException) {
-                    binding.contentLayout.snackbar(e.message!!)
-                    binding.progressBar.visibility = View.GONE
-                    binding.contentLayout.visibility = View.VISIBLE
-                    e.printStackTrace()
-                }
-
-
-            }
-        }
-            }else{
-                binding.progressBar.visibility = View.GONE
-                binding.contentLayout.visibility = View.VISIBLE
-                /*viewModel.getPostDataList().observe(activity!!, Observer {
-                if(!it.isEmpty()){
-                    postlistAdapter.differ.submitList(it)
-                    binding.progressBar.visibility = View.GONE
-                    binding.contentLayout.visibility = View.VISIBLE
-                }else{
-                    binding.progressBar.visibility = View.GONE
-                    binding.contentLayout.visibility = View.VISIBLE
-                }
-                })*/
-            }
-            })
-
+        networkCall()
 
 
     }
+
+    private fun networkCall() {
+        binding.progressBar.visibility = View.VISIBLE
+        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val request = OneTimeWorkRequestBuilder<MyWorkerTask>().setConstraints(constraint).build()
+        WorkManager.getInstance().enqueue(request)
+        WorkManager.getInstance().getWorkInfoByIdLiveData(request.id)
+            .observe(activity!!, Observer { workInfo ->
+                if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
+                    launch {
+                        withContext(Dispatchers.Main) {
+                            try {
+                                val postRepose = viewModel.getPostList()
+                                if (!postRepose.isEmpty()) {
+                                    postlistAdapter.differ.submitList(postRepose)
+                                    viewModel.insertPostDataList(postRepose)
+                                    binding.progressBar.visibility = View.GONE
+                                    binding.contentLayout.visibility = View.VISIBLE
+                                    binding.noData.visibility =View.GONE
+                                } else {
+                                    binding.progressBar.visibility = View.GONE
+                                    binding.contentLayout.visibility = View.VISIBLE
+                                    binding.noData.visibility =View.VISIBLE
+                                }
+                            } catch (e: APIExceptions) {
+                                binding.progressBar.visibility = View.GONE
+                                binding.contentLayout.visibility = View.VISIBLE
+                                binding.noData.visibility =View.VISIBLE
+                                e.printStackTrace()
+                            } catch (e: NoInternetException) {
+                                binding.contentLayout.snackbar(e.message!!)
+                                binding.progressBar.visibility = View.GONE
+                                binding.contentLayout.visibility = View.VISIBLE
+                                binding.noData.visibility =View.VISIBLE
+                                e.printStackTrace()
+                            }
+
+
+                        }
+                    }
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                    binding.contentLayout.visibility = View.VISIBLE
+                    binding.noData.visibility =View.VISIBLE
+
+                }
+            })
+    }
+
     private fun setupRecyclerView(){
         postlistAdapter =
-            PostlistAdapter()
+            PostlistAdapter(requireContext())
         binding.recyclerView.apply {
             isNestedScrollingEnabled = false
             setHasFixedSize(false)
@@ -140,6 +146,24 @@ class PostFragment :Fragment(),CoroutineScope{
             layoutManager = LinearLayoutManager(activity)
 
         }
+        postlistAdapter.setOnRecyclerItemClickListener(object :RecyclerViewClickListener{
+            override fun onItemClickListener(id: Int) {
+               /* val fragmentManager:FragmentManager = parentFragmentManager
+                val transaction = fragmentManager.beginTransaction()
+                val fragment = DetailFragment.newInstance(id)
+                transaction.replace(R.id.constraintLayout,fragment)
+                transaction.addToBackStack(null)
+                transaction.commit()*/
+                val intent: Intent = Intent(activity!!,DetailActivity::class.java).also {
+                    it.putExtra("id",id)
+                    startActivity(it)
+
+                }
+
+
+            }
+        })
+
     }
     companion object {
         /**
@@ -157,31 +181,10 @@ class PostFragment :Fragment(),CoroutineScope{
             return PostFragment()
         }
     }
-    /*inner class MyWorkerTask (context: Context, workerParameters: WorkerParameters):
-        Worker(context,workerParameters){
-        override  fun doWork(): Result {
 
-            return try {
-                try {
-                    makingNetworkCall()
-                }catch (e: Exception){
-                    Result.failure()
-                }
-            }catch (e: Exception){
-                Result.failure()
-            }
-        }
-
-        private  fun makingNetworkCall() :Result{
-            *//*val postRepose = viewModel.getPostList()
-            if (!postRepose.isEmpty()) {
-                return Result.success()
-            }else{
-                return Result.failure()
-            }*//*
-       return Result.success()
-        }
-
-
+    /*override fun onItemClickListener(id: Int) {
+        var fragment:Fragment = Fragment()
+        fragment = DetailFragment.newInstance(id)
     }*/
+
 }
