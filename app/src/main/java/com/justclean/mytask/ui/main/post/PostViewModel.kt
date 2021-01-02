@@ -7,12 +7,13 @@ import com.justclean.mytask.data.repo.PostRepo
 import javax.inject.Inject
 import androidx.hilt.lifecycle.ViewModelInject
 
-class PostViewModel @ViewModelInject constructor(val repo:PostRepo) :ViewModel(){
+class PostViewModel @ViewModelInject constructor(val repo: PostRepo) : ViewModel() {
 
-   fun getPostDataList() = repo.getUser()
+    fun getPostDataList() = repo.getUser()
 
-    suspend fun getPostList():PostDataResponse = repo.getPostDataList()
-    suspend fun insertPostDataList(postDataList:List<PostData>) = repo.insertPostDataList(postDataList)
+    suspend fun getPostList(): PostDataResponse = repo.getPostDataList()
+    suspend fun insertPostDataList(postDataList: List<PostData>) =
+        repo.insertPostDataList(postDataList)
 
 
 }

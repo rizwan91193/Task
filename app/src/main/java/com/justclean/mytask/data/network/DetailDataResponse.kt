@@ -1,4 +1,4 @@
-package com.justclean.mytask.ui.main.post
+package com.justclean.mytask.data.network
 
 import com.justclean.mytask.data.db.entity.DetailsData
 

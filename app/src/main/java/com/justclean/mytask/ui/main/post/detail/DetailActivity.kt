@@ -1,4 +1,4 @@
-package com.justclean.mytask.ui.main.post
+package com.justclean.mytask.ui.main.post.detail
 
 import android.content.Intent
 import android.os.Build
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +20,9 @@ import com.justclean.mytask.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+
 @AndroidEntryPoint
-class DetailActivity :AppCompatActivity(),CoroutineScope{
+class DetailActivity : AppCompatActivity(), CoroutineScope {
 
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var detailViewModel: DetailViewModel
@@ -29,13 +31,14 @@ class DetailActivity :AppCompatActivity(),CoroutineScope{
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = job
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =  DataBindingUtil.setContentView(this, R.layout.fragment_details)
+        binding = DataBindingUtil.setContentView(this, R.layout.fragment_details)
         setupRecyclerView()
-        val data = intent.getIntExtra("id",0)
-        job= Job()
+        val data = intent.getIntExtra("id", 0)
+        job = Job()
         networkConnection = NetworkConnection(this)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -47,22 +50,41 @@ class DetailActivity :AppCompatActivity(),CoroutineScope{
         binding.backButton.setOnClickListener {
             onBackPressed()
         }
-        detailViewModel.text.observe(this, Observer {
-            binding.addFavourite.setOnClickListener {view->
-                networkConnection.observe(this, Observer { isConnected->
-                    if(!isConnected){
-                        savingToFavourite(it)
-//                        binding.addFavourite.visibility = View.GONE
-                        binding.contentLayout.snackbar(getString(R.string.no_internet))
-                    }else{
-                        savingToFavourite(it)
-//                        binding.contentLayout.snackbar("Internet is connected!!")
+        binding.progressBar.visibility = View.VISIBLE
+
+        networkConnection.observe(this, Observer { isConnected ->
+            if (!isConnected) {
+                binding.contentLayout.snackbar(getString(R.string.no_internet))
+                binding.addFavourite.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
+                binding.contentLayout.visibility = View.VISIBLE
+                detailViewModel.text.observe(this, Observer {
+                    binding.addFavourite.setOnClickListener { view ->
+                        if (!binding.recyclerView.isEmpty()) {
+                            savingToFavourite(it)
+                        } else {
+                            binding.contentLayout.snackbar(getString(R.string.no_internet))
+                        }
+
                     }
                 })
+
+            } else {
+
+                binding.progressBar.visibility = View.GONE
+                binding.contentLayout.visibility = View.VISIBLE
+                detailViewModel.text.observe(this, Observer {
+                    binding.addFavourite.setOnClickListener { view ->
+                        savingToFavourite(it)
+
+                    }
+                    networkCall(it)
+                })
+
             }
-            networkCall(it)
 
         })
+
 
     }
 
@@ -73,12 +95,14 @@ class DetailActivity :AppCompatActivity(),CoroutineScope{
         WorkManager.getInstance().getWorkInfoByIdLiveData(request.id)
             .observe(this, Observer { workInfo ->
                 if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
+                    WorkManager.getInstance().cancelAllWork()
                     launch {
                         withContext(Dispatchers.Main) {
                             try {
                                 val detailResponse = detailViewModel.getCommentList(it)
                                 if (!detailResponse.isEmpty()) {
                                     detailsAdapter.differ.submitList(detailResponse)
+                                    binding.recyclerView.visibility = View.VISIBLE
                                     binding.progressBar.visibility = View.GONE
                                     binding.contentLayout.visibility = View.VISIBLE
                                     binding.addFavourite.visibility = View.VISIBLE
@@ -104,20 +128,11 @@ class DetailActivity :AppCompatActivity(),CoroutineScope{
 
                         }
                     }
-                } else {
-                    binding.progressBar.visibility = View.GONE
-                    binding.contentLayout.visibility = View.VISIBLE
-                    binding.addFavourite.visibility = View.GONE
-                    binding.noData.visibility = View.VISIBLE
-
-
                 }
             })
     }
 
-    private fun networkCall(){
 
-    }
     private fun savingToFavourite(it: Int) {
         detailViewModel.getPostDataById(it).observe(this, Observer { postData ->
             if (postData != null) {
@@ -138,12 +153,14 @@ class DetailActivity :AppCompatActivity(),CoroutineScope{
     }
 
     private fun callingIntent() {
-        Intent(this@DetailActivity,MainActivity::class.java).also {
+        Intent(this@DetailActivity, MainActivity::class.java).also {
+            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(it)
+            finish()
         }
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         detailsAdapter =
             DetailsAdapter()
         binding.recyclerView.apply {

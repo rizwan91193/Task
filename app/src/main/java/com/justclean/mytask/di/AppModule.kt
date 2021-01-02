@@ -24,39 +24,40 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-object AppModule{
-    const val BASE_URL ="https://jsonplaceholder.typicode.com"
+object AppModule {
+    const val BASE_URL = "https://jsonplaceholder.typicode.com"
 
-
-   /* @Provides
-    fun providesNetworkInterceptor(@ApplicationContext context: Context):Interceptor = NetworkConnectionInterceptor(context)*/
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson: Gson):Retrofit {
-//        val okHttpClient: OkHttpClient =
-//            OkHttpClient.Builder().addInterceptor(networkConnectionInterceptor).build()
-       return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(
-            GsonConverterFactory.create(gson))
-//            .client(okHttpClient)
+    fun provideRetrofit(gson: Gson): Retrofit {
+        return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(
+            GsonConverterFactory.create(gson)
+        )
             .build()
     }
 
     @Provides
-    fun provideGson():Gson = GsonBuilder().create()
+    fun provideGson(): Gson = GsonBuilder().create()
 
     @Provides
-    fun providesPostApi(retrofit: Retrofit):PostApi = retrofit.create(PostApi::class.java)
+    fun providesPostApi(retrofit: Retrofit): PostApi = retrofit.create(PostApi::class.java)
+
     @Singleton
     @Provides
-    fun providesDatabase(@ApplicationContext applicationContext:Context) = AppDatabase.invoke(applicationContext)
+    fun providesDatabase(@ApplicationContext applicationContext: Context) =
+        AppDatabase.invoke(applicationContext)
+
     @Singleton
     @Provides
     fun providePostDao(db: AppDatabase) = db.getPostDao()
+
     @Singleton
     @Provides
-    fun provideRepository(postapi: PostApi,
-                          db: AppDatabase) =
+    fun provideRepository(
+        postapi: PostApi,
+        db: AppDatabase
+    ) =
         PostRepo(postapi, db)
 
 }

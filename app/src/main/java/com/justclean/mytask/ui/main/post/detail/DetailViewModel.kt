@@ -1,4 +1,4 @@
-package com.justclean.mytask.ui.main.post
+package com.justclean.mytask.ui.main.post.detail
 
 import android.telecom.Call
 import androidx.hilt.lifecycle.ViewModelInject
@@ -11,7 +11,7 @@ import com.justclean.mytask.data.db.entity.FavoritesData
 import com.justclean.mytask.data.db.entity.PostData
 import com.justclean.mytask.data.repo.PostRepo
 
-class DetailViewModel @ViewModelInject constructor(val repo: PostRepo):ViewModel(){
+class DetailViewModel @ViewModelInject constructor(val repo: PostRepo) : ViewModel() {
     private val _index = MutableLiveData<Int>()
     val text: LiveData<Int> = Transformations.map(_index) {
         it
@@ -21,9 +21,9 @@ class DetailViewModel @ViewModelInject constructor(val repo: PostRepo):ViewModel
         _index.value = index
     }
 
-    suspend fun getCommentList(id:Int):List<DetailsData> =repo.getCommentDataList(id)
+    suspend fun getCommentList(id: Int): List<DetailsData> = repo.getCommentDataList(id)
 
-    fun getPostDataById(id:Int) = repo.getPostListById(id)
+    fun getPostDataById(id: Int) = repo.getPostListById(id)
     suspend fun insertToFavourites(favData: FavoritesData) = repo.insertToFavourites(favData)
 
 }

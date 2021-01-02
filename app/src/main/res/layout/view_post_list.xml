@@ -16,23 +16,7 @@
         android:layout_height="match_parent"
 
         >
-        <!--<TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/title_placeholder"
-                android:text="@string/title"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-               app:layout_constraintHorizontal_weight="0.1"
-                android:textColor="@color/black"
-                app:layout_constraintRight_toLeftOf="@+id/title_value"
-                android:layout_marginTop="@dimen/default_margin"
-                android:textSize="@dimen/medium_text_size"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                >
 
-            </TextView>-->
         <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

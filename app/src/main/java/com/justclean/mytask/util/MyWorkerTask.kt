@@ -1,6 +1,8 @@
 package com.justclean.mytask.util
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.work.CoroutineWorker
 import androidx.work.Worker
@@ -24,12 +26,11 @@ class MyWorkerTask (context: Context,workerParameters: WorkerParameters):
     }
 
     private suspend fun makingNetworkCall() :Result{
-       /* val postRepose = viewModel.getPostList()
-        if (!postRepose.isEmpty()) {
-            return Result.success()
-        }else{
-            return Result.failure()
-        }*/
+      Handler(Looper.getMainLooper()).postDelayed({
+
+      },3000)
+
+
         return Result.success()
 
     }

@@ -21,9 +21,10 @@ import com.justclean.mytask.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+
 @AndroidEntryPoint
-class FavoritesFragment :Fragment(),CoroutineScope{
-    private lateinit var binding:FragmentFavoritesBinding
+class FavoritesFragment : Fragment(), CoroutineScope {
+    private lateinit var binding: FragmentFavoritesBinding
     private lateinit var viewModel: FavoritesViewModel
     private lateinit var favoritesAdapter: FavoritesAdapter
     private lateinit var networkConnection: NetworkConnection
@@ -31,20 +32,23 @@ class FavoritesFragment :Fragment(),CoroutineScope{
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = job
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        job= Job()
+        job = Job()
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
         viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
         return binding.root
     }
-    private fun setupRecyclerView(){
+
+    private fun setupRecyclerView() {
         favoritesAdapter =
             FavoritesAdapter()
         binding.recyclerView.apply {
@@ -55,25 +59,25 @@ class FavoritesFragment :Fragment(),CoroutineScope{
 
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupRecyclerView()
         networkConnection = NetworkConnection(activity!!)
-        networkConnection.observe(activity!!, Observer { isConnected->
-            if(!isConnected){
+        networkConnection.observe(activity!!, Observer { isConnected ->
+            if (!isConnected) {
                 binding.contentLayout.snackbar("No Internet Connection")
-                binding.noData.visibility = View.VISIBLE
-            }else{
-
-//                binding.contentLayout.snackbar("Internet is connected!!")
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
                 viewModel.getFavDataList().observe(activity!!, Observer {
-                    if(!it.isEmpty()){
+                    if (!it.isEmpty()) {
                         favoritesAdapter.differ.submitList(it)
                         binding.progressBar.visibility = View.GONE
                         binding.contentLayout.visibility = View.VISIBLE
                         binding.noData.visibility = View.GONE
-                    }else{
+                    } else {
                         binding.progressBar.visibility = View.GONE
                         binding.contentLayout.visibility = View.VISIBLE
                         binding.noData.visibility = View.VISIBLE
@@ -82,13 +86,11 @@ class FavoritesFragment :Fragment(),CoroutineScope{
             }
 
 
-
         })
 
 
-
-
     }
+
     companion object {
         /**
          * The fragment argument representing the section number for this

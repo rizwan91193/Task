@@ -6,7 +6,7 @@ import com.justclean.mytask.data.db.entity.FavoritesData
 import com.justclean.mytask.data.db.entity.PostData
 import com.justclean.mytask.data.network.PostDataResponse
 import com.justclean.mytask.data.network.SafeApiRequest
-import com.justclean.mytask.ui.main.post.DetailDataResponse
+import com.justclean.mytask.data.network.DetailDataResponse
 import javax.inject.Inject
 
 class PostRepo @Inject constructor(private val api:PostApi,private val db:AppDatabase):SafeApiRequest(){
@@ -18,7 +18,7 @@ class PostRepo @Inject constructor(private val api:PostApi,private val db:AppDat
 
     fun getUser() = db.getPostDao().getPostDataList()
 
-    suspend fun getCommentDataList(id:Int):DetailDataResponse{
+    suspend fun getCommentDataList(id:Int): DetailDataResponse {
         return apiRequest { api.getCommentList(id) }
     }
 

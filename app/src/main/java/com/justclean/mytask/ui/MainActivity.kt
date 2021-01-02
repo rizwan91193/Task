@@ -12,16 +12,18 @@ import androidx.databinding.DataBindingUtil
 import com.justclean.mytask.R
 import com.justclean.mytask.databinding.ActivityMainBinding
 import com.justclean.mytask.ui.main.SectionsPagerAdapter
+import com.justclean.mytask.util.BasicClickListener
+import com.justclean.mytask.util.CommonUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityMainBinding
-//    private lateinit var networkConnection:NetworkConnection
+    private lateinit var binding: ActivityMainBinding
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
@@ -33,21 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
 
-
-        /*networkConnection = NetworkConnection(applicationContext)
-        networkConnection.observe(this, Observer { isConnected->
-            if(!isConnected){
-                binding.rootLayout.snackbar("No Internet Connection")
-            }else{
-                binding.rootLayout.snackbar("Internet is connected!!")
-            }
-
-
-
-        })*/
 
     }
 
@@ -57,26 +47,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-//            val fragment = this.supportFragmentManager.primaryNavigationFragment
-           /* val fragment = supportFragmentManager.fragments.get(0).childFragmentManager.fragments.get(0)
-            if(fragment is DetailFragment){
-                val transaction = this.supportFragmentManager.beginTransaction()
-                val fragment1 = PostFragment()
-                transaction.replace(R.id.constraintLayout,fragment1)
-                transaction.commit()
-            }*/
-            /*if(supportFragmentManager.backStackEntryCount>1){
-                val fragment = PlaceholderFragment.newInstance(0)
-            }else{
-                super.onBackPressed()
-            }*/
+        CommonUtils.alertDialog(this,"Do you want to exit?","Yes","No",object :BasicClickListener{
+            override fun onYesClick(value: String?) {
+                this@MainActivity.finish()
+                System.exit(0)
+            }
 
+            override fun onNoClick() {
 
-
-           /* val transaction = supportFragmentManager.beginTransaction()
-            val fragment1 = PostFragment()
-            transaction.replace(R.id.constraintLayout,fragment1)
-            transaction.commit()*/
+            }
+        })
     }
 }

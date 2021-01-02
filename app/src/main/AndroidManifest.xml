@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.main.post.DetailActivity"
+            android:name=".ui.main.post.detail.DetailActivity"
             android:label="@string/app_name"
             android:theme="@style/MyTheme">
 

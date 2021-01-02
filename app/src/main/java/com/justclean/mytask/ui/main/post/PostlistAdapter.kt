@@ -20,22 +20,30 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
-class PostlistAdapter(val context:Context):RecyclerView.Adapter<PostlistAdapter.PostlistViewHolder>(){
+class PostlistAdapter(val context: Context) :
+    RecyclerView.Adapter<PostlistAdapter.PostlistViewHolder>() {
 
-    private var recyclerViewClickListener:RecyclerViewClickListener?=null
+    private var recyclerViewClickListener: RecyclerViewClickListener? = null
 
-inner class PostlistViewHolder(val viewPostListBinding: ViewPostListBinding):RecyclerView.ViewHolder(viewPostListBinding.root){
+    inner class PostlistViewHolder(val viewPostListBinding: ViewPostListBinding) :
+        RecyclerView.ViewHolder(viewPostListBinding.root) {
 
-}
-    fun setOnRecyclerItemClickListener(recyclerViewClickListener: RecyclerViewClickListener){
+    }
+
+    fun setOnRecyclerItemClickListener(recyclerViewClickListener: RecyclerViewClickListener) {
         this.recyclerViewClickListener = recyclerViewClickListener
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostlistViewHolder =
-        PostlistViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-            R.layout.view_post_list,parent,false))
+        PostlistViewHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.view_post_list, parent, false
+            )
+        )
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<PostData>(){
+    private val differCallback = object : DiffUtil.ItemCallback<PostData>() {
         override fun areItemsTheSame(oldItem: PostData, newItem: PostData): Boolean {
             return oldItem.id == newItem.id
         }
@@ -52,32 +60,29 @@ inner class PostlistViewHolder(val viewPostListBinding: ViewPostListBinding):Rec
 
     }
 
-    val differ = AsyncListDiffer(this,differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
     override fun onBindViewHolder(holder: PostlistViewHolder, position: Int) {
-        val postData =differ.currentList[position]
+        val postData = differ.currentList[position]
         holder.viewPostListBinding.titleValue.setText(postData.title)
         holder.viewPostListBinding.body.setText(postData.body)
         CoroutineScope(Dispatchers.Main).launch {
             Glide.with(context).load(getRandomImage()).into(holder.viewPostListBinding.postImage)
 
         }
-       /* Thread(Runnable {
 
-        }).start()*/
-//        Glide.with(context).load(getRandomImage()).into(holder.viewPostListBinding.postImage)
-//        val postImage = context.resources.getResourceEntryName()
-        holder.viewPostListBinding.rootLayout.setOnClickListener{
+        holder.viewPostListBinding.rootLayout.setOnClickListener {
             recyclerViewClickListener?.onItemClickListener(postData.id)
         }
     }
+
     @SuppressLint("Recycle")
-    private suspend fun getRandomImage():Int{
-        val imgs:TypedArray
+    private suspend fun getRandomImage(): Int {
+        val imgs: TypedArray
         imgs = context.resources.obtainTypedArray(R.array.PostImages)
-        val random:Random =Random
+        val random: Random = Random
         val rndInd = random.nextInt(imgs.length())
-        return imgs.getResourceId(rndInd,0)
+        return imgs.getResourceId(rndInd, 0)
     }
 
-    override fun getItemCount(): Int  = differ.currentList.size
+    override fun getItemCount(): Int = differ.currentList.size
 }

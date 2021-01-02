@@ -29,26 +29,26 @@ class PlaceholderFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_main, container, false)
         pageViewModel.text.observe(activity!!, Observer<String> {
 
-            when(it){
-                "0"->{
-                    val fragmentManager:FragmentManager = childFragmentManager
+            when (it) {
+                "0" -> {
+                    val fragmentManager: FragmentManager = childFragmentManager
                     val transaction = fragmentManager.beginTransaction()
                     val fragment = PostFragment()
-                    transaction.add(R.id.constraintLayout,fragment)
+                    transaction.add(R.id.constraintLayout, fragment)
                     transaction.addToBackStack(null)
                     transaction.commit()
 
                 }
-                "1"->{
+                "1" -> {
                     val transaction = childFragmentManager.beginTransaction()
                     val fragment = FavoritesFragment()
-                    transaction.add(R.id.constraintLayout,fragment)
+                    transaction.add(R.id.constraintLayout, fragment)
                     transaction.addToBackStack(null)
                     transaction.commit()
                 }

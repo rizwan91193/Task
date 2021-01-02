@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 
 class PageViewModel @ViewModelInject constructor() : ViewModel() {
 
-        private val _index = MutableLiveData<Int>()
-        val text: LiveData<String> = Transformations.map(_index) {
-            "$it"
-        }
+    private val _index = MutableLiveData<Int>()
+    val text: LiveData<String> = Transformations.map(_index) {
+        "$it"
+    }
 
-        fun setIndex(index: Int) {
-            _index.value = index
-        }
+    fun setIndex(index: Int) {
+        _index.value = index
+    }
 }
